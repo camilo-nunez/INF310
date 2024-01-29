@@ -1,0 +1,463 @@
+\chapter{Supplementary Figures and Tables} \label{appendix:figs-tabs}
+
+\section{Predictions from models} \label{sec:70:preds}
+
+%%%% Instacen segmetnation masks and boundinx box predicot for each model over the image 96825 %%%%
+\begin{figure}[H]
+    \centering % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000096825/000000096825_pred_segm_bbox_internimage_s_bifpn.jpeg}
+  \caption{\protect\raggedright Predictions using InternImage-S + BiFPN.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000096825/000000096825_pred_segm_bbox_convnext_small_bifpn.jpeg}
+  \caption{\protect\raggedright Predictions using ConvNeXt-S + BiFPN.}
+\end{subfigure} % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000096825/000000096825_pred_segm_bbox_tf_efficientnetv2_m_bifpn.jpeg}
+  \caption{\protect\raggedright Predictions using EfficientNetV2-M + BiFPN.}
+\end{subfigure}\hfil
+\vspace{5mm}
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000096825/000000096825_pred_segm_bbox_internimage_s_cabifpn.jpeg}
+  \caption{\protect\raggedright Predictions using InternImage-S + CABiFPN.}
+\end{subfigure} % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000096825/000000096825_pred_segm_bbox_convnext_small_cabifpn.jpeg}
+  \caption{\protect\raggedright Predictions using ConvNeXt-S + CABiFPN.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000096825/000000096825_pred_segm_bbox_tf_efficientnetv2_m_cabifpn.jpeg}
+  \caption{\protect\raggedright Predictions using EfficientNetV2-M + CABiFPN.}
+\end{subfigure}
+\caption[Object detection and instance segmentation predictions for image \texttt{ID 96825}.]{Object detection and instance segmentation predictions for image \texttt{ID 96825} based on evaluations of the six tested models.}
+\label{fig:results:preds:a1}
+\end{figure}
+%%%% Instacen segmetnation masks and boundinx box predicot for each model over the image 96825 %%%%
+
+%%%% Instacen segmetnation masks and boundinx box predicot for each model over the image 171382 %%%%
+\begin{figure}[H]
+    \centering % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000171382/000000171382_pred_segm_bbox_internimage_s_bifpn.jpeg}
+  \caption{\protect\raggedright Predictions using InternImage-S + BiFPN.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000171382/000000171382_pred_segm_bbox_convnext_small_bifpn.jpeg}
+  \caption{\protect\raggedright Predictions using ConvNeXt-S + BiFPN.}
+\end{subfigure} % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000171382/000000171382_pred_segm_bbox_tf_efficientnetv2_m_bifpn.jpeg}
+  \caption{\protect\raggedright Predictions using EfficientNetV2-M + BiFPN.}
+\end{subfigure}\hfil
+\vspace{5mm}
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000171382/000000171382_pred_segm_bbox_internimage_s_cabifpn.jpeg}
+  \caption{\protect\raggedright Predictions using InternImage-S + CABiFPN.}
+\end{subfigure} % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000171382/000000171382_pred_segm_bbox_convnext_small_cabifpn.jpeg}
+  \caption{\protect\raggedright Predictions using ConvNeXt-S + CABiFPN.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000171382/000000171382_pred_segm_bbox_tf_efficientnetv2_m_cabifpn.jpeg}
+  \caption{\protect\raggedright Predictions using EfficientNetV2-M + CABiFPN.}
+\end{subfigure}
+\caption[Object detection and instance segmentation predictions for image \texttt{ID 171382}.]{Object detection and instance segmentation predictions for image \texttt{ID 171382} based on evaluations of the six tested models.}
+\label{fig:results:preds:a2}
+\end{figure}
+%%%% Instacen segmetnation masks and boundinx box predicot for each model over the image 171382 %%%%
+
+\section{\texttt{Ablation CAM} over models} \label{sec:70:cams}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ABLATION CAMS over 96825 COCO image %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% Ablation CAM applied to  InternImage-S~+~BiFPN  %%%%%
+\begin{figure}[H]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/internimage_s_bifpn/000000096825_AblationCAM_internimage_s_bifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/internimage_s_bifpn/000000096825_AblationCAM_internimage_s_bifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/internimage_s_bifpn/000000096825_AblationCAM_internimage_s_bifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/internimage_s_bifpn/000000096825_AblationCAM_internimage_s_bifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/internimage_s_bifpn/000000096825_AblationCAM_internimage_s_bifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the InternImage-S~+~BiFPN model.]{\texttt{Ablation CAM} applied to the five layers in the neck of the InternImage-S~+~BiFPN model, with corresponding object detection predictions for image \texttt{ID 96825}.}
+\label{fig:results:cam:96825:1}
+\end{figure}
+%%%%% Ablation CAM applied to  InternImage-S~+~BiFPN  %%%%%
+
+%%%%% Ablation CAM applied to  InternImage-S~+~CABiFPN  %%%%%
+\begin{figure}[H]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/internimage_s_cabifpn/000000096825_AblationCAM_internimage_s_cabifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/internimage_s_cabifpn/000000096825_AblationCAM_internimage_s_cabifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/internimage_s_cabifpn/000000096825_AblationCAM_internimage_s_cabifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/internimage_s_cabifpn/000000096825_AblationCAM_internimage_s_cabifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/internimage_s_cabifpn/000000096825_AblationCAM_internimage_s_cabifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the InternImage-S~+~CABiFPN model.]{\texttt{Ablation CAM} applied to the five layers in the neck of the InternImage-S~+~CABiFPN model, with corresponding object detection predictions for image \texttt{ID 96825}.}
+\label{fig:results:cam:96825:2}
+\end{figure}
+%%%%% Ablation CAM applied to  InternImage-S~+~CABiFPN  %%%%%
+
+
+%%%%% Ablation CAM applied to  ConvNeXt-S~+~BiFPN  %%%%%
+\begin{figure}[H]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/convnext_small_bifpn/000000096825_AblationCAM_convnext_small_bifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/convnext_small_bifpn/000000096825_AblationCAM_convnext_small_bifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/convnext_small_bifpn/000000096825_AblationCAM_convnext_small_bifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/convnext_small_bifpn/000000096825_AblationCAM_convnext_small_bifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/convnext_small_bifpn/000000096825_AblationCAM_convnext_small_bifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the ConvNeXt-S~+~BiFPN model.]{\texttt{Ablation CAM} applied to the five layers in the neck of the ConvNeXt-S~+~BiFPN model, with corresponding object detection predictions for image \texttt{ID 96825}.}
+\label{fig:results:cam:96825:3}
+\end{figure}
+%%%%% Ablation CAM applied to  ConvNeXt-S~+~BiFPN  %%%%%
+
+%%%%% Ablation CAM applied to  ConvNeXt-S~+~CABiFPN  %%%%%
+\begin{figure}[H]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/convnext_small_cabifpn/000000096825_AblationCAM_convnext_small_cabifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/convnext_small_cabifpn/000000096825_AblationCAM_convnext_small_cabifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/convnext_small_cabifpn/000000096825_AblationCAM_convnext_small_cabifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/convnext_small_cabifpn/000000096825_AblationCAM_convnext_small_cabifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/convnext_small_cabifpn/000000096825_AblationCAM_convnext_small_cabifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the ConvNeXt-S~+~CABiFPN model.]{\texttt{Ablation CAM} applied to the five layers in the neck of the ConvNeXt-S~+~CABiFPN model, with corresponding object detection predictions for image \texttt{ID 96825}.}
+\label{fig:results:cam:96825:4}
+\end{figure}
+%%%%% Ablation CAM applied to  ConvNeXt-S~+~BiFPN  %%%%%
+
+%%%%% Ablation CAM applied to  TF-EfficientNetV2-M~+~BiFPN  %%%%%
+\begin{figure}[H]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/tf_efficientnetv2_m_bifpn/000000096825_AblationCAM_tf_efficientnetv2_m_bifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/tf_efficientnetv2_m_bifpn/000000096825_AblationCAM_tf_efficientnetv2_m_bifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/tf_efficientnetv2_m_bifpn/000000096825_AblationCAM_tf_efficientnetv2_m_bifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/tf_efficientnetv2_m_bifpn/000000096825_AblationCAM_tf_efficientnetv2_m_bifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/tf_efficientnetv2_m_bifpn/000000096825_AblationCAM_tf_efficientnetv2_m_bifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the EfficientNetV2-M~+~BiFPN model.]{\protect\raggedright \texttt{Ablation CAM} applied to the five layers in the neck of the EfficientNetV2-M~+~BiFPN model, with corresponding object detection predictions for image \texttt{ID 96825}.}
+\label{fig:results:cam:96825:5}
+\end{figure}
+%%%%% Ablation CAM applied to  TF-EfficientNetV2-M~+~BiFPN  %%%%%
+
+%%%%% Ablation CAM applied to  TF-EfficientNetV2-M~+~CABiFPN  %%%%%
+\begin{figure}[H]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/tf_efficientnetv2_m_cabifpn/000000096825_AblationCAM_tf_efficientnetv2_m_cabifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/tf_efficientnetv2_m_cabifpn/000000096825_AblationCAM_tf_efficientnetv2_m_cabifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/tf_efficientnetv2_m_cabifpn/000000096825_AblationCAM_tf_efficientnetv2_m_cabifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/tf_efficientnetv2_m_cabifpn/000000096825_AblationCAM_tf_efficientnetv2_m_cabifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000096825/tf_efficientnetv2_m_cabifpn/000000096825_AblationCAM_tf_efficientnetv2_m_cabifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the EfficientNetV2-M~+~CABiFPN model.]{\protect\raggedright \texttt{Ablation CAM} applied to the five layers in the neck of the EfficientNetV2-M~+~CABiFPN model, with corresponding object detection predictions for image \texttt{ID 96825}.}
+\label{fig:results:cam:96825:6}
+\end{figure}
+%%%%% Ablation CAM applied to  TF-EfficientNetV2-M~+~CABiFPN  %%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ABLATION CAMS over 96825 COCO image %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ABLATION CAMS over 171382 COCO image %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% Ablation CAM applied to  InternImage-S~+~BiFPN  %%%%%
+\begin{figure}[H]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/internimage_s_bifpn/000000171382_AblationCAM_internimage_s_bifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/internimage_s_bifpn/000000171382_AblationCAM_internimage_s_bifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/internimage_s_bifpn/000000171382_AblationCAM_internimage_s_bifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/internimage_s_bifpn/000000171382_AblationCAM_internimage_s_bifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/internimage_s_bifpn/000000171382_AblationCAM_internimage_s_bifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the InternImage-S~+~BiFPN model.]{\texttt{Ablation CAM} applied to the five layers in the neck of the InternImage-S~+~BiFPN model, with corresponding object detection predictions for image \texttt{ID 171382}.}
+\label{fig:results:cam:171382:1}
+\end{figure}
+%%%%% Ablation CAM applied to  InternImage-S~+~BiFPN  %%%%%
+
+%%%%% Ablation CAM applied to  InternImage-S~+~CABiFPN  %%%%%
+\begin{figure}[H]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/internimage_s_cabifpn/000000171382_AblationCAM_internimage_s_cabifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/internimage_s_cabifpn/000000171382_AblationCAM_internimage_s_cabifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/internimage_s_cabifpn/000000171382_AblationCAM_internimage_s_cabifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/internimage_s_cabifpn/000000171382_AblationCAM_internimage_s_cabifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/internimage_s_cabifpn/000000171382_AblationCAM_internimage_s_cabifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the InternImage-S~+~CABiFPN model.]{\texttt{Ablation CAM} applied to the five layers in the neck of the InternImage-S~+~CABiFPN model, with corresponding object detection predictions for image \texttt{ID 171382}.}
+\label{fig:results:cam:171382:2}
+\end{figure}
+%%%%% Ablation CAM applied to  InternImage-S~+~CABiFPN  %%%%%
+
+
+%%%%% Ablation CAM applied to  ConvNeXt-S~+~BiFPN  %%%%%
+\begin{figure}[H]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/convnext_small_bifpn/000000171382_AblationCAM_convnext_small_bifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/convnext_small_bifpn/000000171382_AblationCAM_convnext_small_bifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/convnext_small_bifpn/000000171382_AblationCAM_convnext_small_bifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/convnext_small_bifpn/000000171382_AblationCAM_convnext_small_bifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/convnext_small_bifpn/000000171382_AblationCAM_convnext_small_bifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the ConvNeXt-S~+~BiFPN model.]{\texttt{Ablation CAM} applied to the five layers in the neck of the ConvNeXt-S~+~BiFPN model, with corresponding object detection predictions for image \texttt{ID 171382}.}
+\label{fig:results:cam:171382:3}
+\end{figure}
+%%%%% Ablation CAM applied to  ConvNeXt-S~+~BiFPN  %%%%%
+
+
+%%%%% Ablation CAM applied to  ConvNeXt-S~+~CABiFPN  %%%%%
+\begin{figure}[H]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/convnext_small_cabifpn/000000171382_AblationCAM_convnext_small_cabifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/convnext_small_cabifpn/000000171382_AblationCAM_convnext_small_cabifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/convnext_small_cabifpn/000000171382_AblationCAM_convnext_small_cabifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/convnext_small_cabifpn/000000171382_AblationCAM_convnext_small_cabifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/convnext_small_cabifpn/000000171382_AblationCAM_convnext_small_cabifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the ConvNeXt-S~+~CABiFPN model.]{\texttt{Ablation CAM} applied to the five layers in the neck of the ConvNeXt-S~+~CABiFPN model, with corresponding object detection predictions for image \texttt{ID 171382}.}
+\label{fig:results:cam:171382:4}
+\end{figure}
+%%%%% Ablation CAM applied to  ConvNeXt-S~+~BiFPN  %%%%%
+
+
+
+%%%%% Ablation CAM applied to  TF-EfficientNetV2-M~+~BiFPN  %%%%%
+\begin{figure}[H]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/tf_efficientnetv2_m_bifpn/000000171382_AblationCAM_tf_efficientnetv2_m_bifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/tf_efficientnetv2_m_bifpn/000000171382_AblationCAM_tf_efficientnetv2_m_bifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/tf_efficientnetv2_m_bifpn/000000171382_AblationCAM_tf_efficientnetv2_m_bifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/tf_efficientnetv2_m_bifpn/000000171382_AblationCAM_tf_efficientnetv2_m_bifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/tf_efficientnetv2_m_bifpn/000000171382_AblationCAM_tf_efficientnetv2_m_bifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the EfficientNetV2-M~+~BiFPN model.]{\protect\raggedright \texttt{Ablation CAM} applied to the five layers in the neck of the EfficientNetV2-M~+~BiFPN model, with corresponding object detection predictions for image \texttt{ID 171382}.}
+\label{fig:results:cam:171382:5}
+\end{figure}
+%%%%% Ablation CAM applied to  TF-EfficientNetV2-M~+~BiFPN  %%%%%
+
+
+
+%%%%% Ablation CAM applied to  TF-EfficientNetV2-M~+~CABiFPN  %%%%%
+\begin{figure}[H]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/tf_efficientnetv2_m_cabifpn/000000171382_AblationCAM_tf_efficientnetv2_m_cabifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/tf_efficientnetv2_m_cabifpn/000000171382_AblationCAM_tf_efficientnetv2_m_cabifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/tf_efficientnetv2_m_cabifpn/000000171382_AblationCAM_tf_efficientnetv2_m_cabifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/tf_efficientnetv2_m_cabifpn/000000171382_AblationCAM_tf_efficientnetv2_m_cabifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000171382/tf_efficientnetv2_m_cabifpn/000000171382_AblationCAM_tf_efficientnetv2_m_cabifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the EfficientNetV2-M~+~CABiFPN model.]{\protect\raggedright \texttt{Ablation CAM} applied to the five layers in the neck of the EfficientNetV2-M~+~CABiFPN model, with corresponding object detection predictions for image \texttt{ID 171382}.}
+\label{fig:results:cam:171382:6}
+\end{figure}
+%%%%% Ablation CAM applied to  TF-EfficientNetV2-M~+~CABiFPN  %%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ABLATION CAMS over 171382 COCO image %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Pixel Removal with \texttt{ROAD} strategy}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{figures/road/ROADLeastRelevantFirst_80_all_models.jpeg}
+    \caption{Visualization of layers 1, 3, and 5 in the neck for the six tested models after applying the ROAD Least Relevant First method and removing $20\%$ of the image (at the 80th percentile). Evaluated using image \texttt{ID 171382}.}
+    \label{fig:results:road:lrf}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{figures/road/ROADMostRelevantFirst_80_all_models.jpeg}
+    \caption{Visualization of layers 1, 3, and 5 in the neck for the six tested models after applying the ROAD Most Relevant First method and removing $20\%$ of the image (at the 80th percentile). Evaluated using image \texttt{ID 171382}.}
+    \label{fig:results:road:mrf}
+\end{figure}

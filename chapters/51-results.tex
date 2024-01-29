@@ -1,0 +1,467 @@
+\chapter{Results}
+
+\section{Experiments Definitions}
+The primary aim of this study is to rigorously investigate the efficacy of our proposed end-to-end neural network model in addressing challenges related to object detection and instance segmentation. To achieve this, a meticulous experimental setup has been established to ensure both the computational rigor and the reproducibility of results.
+
+\subsection{Hardware Configuration}
+For the purpose of this study, a specialized hardware configuration was utilized during the experimental phase to facilitate accelerated computation. This hardware was instrumental in training the end-to-end neural network with the assistance of GPU acceleration. A comprehensive list of the hardware components and their respective models is provided in Table \ref{tab:50:hard}.
+
+\begin{table}[!htbp]
+\centering 
+\begin{tabular}{|r|l|}
+\hline
+\multicolumn{1}{|c|}{\textbf{Component}} & \multicolumn{1}{c|}{\textbf{Model}} \\ \hline
+CPU & \textit{AMD Ryzen 9 5950X 16-Core Processor}\\
+GPU & \textit{NVIDIA GeForce RTX 3090 24GB}\\
+RAM & \textit{64GB} \\
+Data Storage & \textit{NVMe 1TB}\\ \hline
+\end{tabular}
+\caption{Detailed hardware configuration employed for model training.}
+\label{tab:50:hard}
+\end{table}
+
+\subsection{Specifications of Computational Environment}
+The architecture of the proposed network was realized through the utilization of the PyTorch framework~\cite{NEURIPS2019_bdbca288}. To ensure compatibility and leverage optimizations, the computational environment was configured using NVIDIA NGC's official PyTorch container, version 23.05~\footnote{\url{https://docs.nvidia.com/deeplearning/frameworks/pytorch-release-notes/rel-23-05.html}}. This containerized approach facilitates reproducibility and enhances the overall robustness of the experimental setup.
+
+For the quantitative assessment of model performance, metric evaluations were conducted as delineated in Section \ref{sec:metrics}. Specifically, the PyTorch model underwent evaluation via the TorchMetrics API library~\footnote{\url{https://torchmetrics.readthedocs.io/en/stable/}}. This library was chosen for its comprehensive set of metrics that are well-aligned with the evaluation criteria set forth in this study.
+
+Furthermore, the methodologies for CNN explainability were discussed in Section \ref{sec:explanation}. To elucidate the behavior of the trained model, two strategies were employed: Ablation CAM and ROAD strategy. These strategies were implemented using the \textit{Advanced AI Explainability for PyTorch} package~\cite{jacobgilpytorchcam}.\\
+
+The official repository, which contains the source code, required libraries, configuration files, and checkpoints, can be accessed via the following URL: \url{https://github.com/camilo-nunez/ca-bifpn}.
+\subsection{Training Specifications}
+
+\subsubsection{Dataset}
+In order to rigorously assess the performance of our proposed model in the realms of object detection and instance segmentation, we employed the Common Objects in Context (COCO) dataset, as outlined in \cite{DBLP:journals/corr/LinMBHPRDZ14}. Specifically, the 2017 version of this dataset was utilized for both the training and evaluation phases. The COCO dataset is a large-scale, multi-purpose resource that encompasses various tasks within computer vision, including image classification, object detection, semantic segmentation, and instance segmentation. It boasts an extensive collection of 328,000 images, encompassing 2.5 million labeled instances across 91 object classes, 80 of which are designated for the task of instance segmentation.
+
+One salient feature of the COCO dataset that aligns well with the objectives of this research is its proclivity for scale variation and small object instances. A significant portion of object instances in the dataset occupies less than $1\%$ of the overall image area, as noted in \cite{DBLP:journals/corr/abs-1711-08189}. This characteristic makes the COCO dataset an ideal candidate for evaluating how well our proposed model can generalize and perform when confronted with scale variability and diminutive object instances.
+
+Nevertheless, it is imperative to acknowledge the inherent class imbalance within the COCO dataset. Notably, the class labeled \texttt{'person'} is disproportionately represented, boasting a far greater number of instances compared to other classes. 
+% This imbalance could introduce biases in model training and performance evaluation, thus warranting consideration of mitigation strategies such as data augmentation or re-sampling techniques during the experimental design phase.
+
+\subsubsection{Training Phase} \label{subsubsec:40:train}
+
+As delineated in Chapter \ref{chap:40}, the architecture of the proposed end-to-end model is compartmentalized into three integral components: (I) the backbone, (II) the neck, and (III) the head detector.
+
+\paragraph{Backbone Selection and Configuration}
+
+For the backbone, we leverage three pre-trained models: InternImage~\cite{wang2023internimage}, ConvNeXt~\cite{liu2022convnet}, and EfficientNetV2~\cite{tan2021efficientnetv2}. The configurations of these models employed during training are detailed in Table \ref{tab:50:back-configs}. The backbones are categorized into three distinct groups, each of which is organized based on the similarity in the number of parameters. Due to constraints in hardware capabilities and the computational time required for training, our experiments focus exclusively on the models belonging to the group labeled as \(G1\). However, configuration files for all the proposed groups of backbones are publicly available in the official repository.
+
+\begin{table}[!htbp]
+\centering 
+\begin{tabular}{c|r|c}
+Group & \multicolumn{1}{c|}{Model Name} & \multicolumn{1}{c}{\textbf{\# of Parameters (Millions)}} \\ \hline
+\multirow{3}{*}{G0} & InternImage-T & 28M \\
+                    & ConvNeXt-T & 27M \\
+                    & EfficientNetV2-S & 19M \\ \hline
+\multirow{3}{*}{G1} & InternImage-S & 48M \\
+                    & ConvNeXt-S & 49M \\
+                    & EfficientNetV2-M & 52M \\ \hline
+\multirow{3}{*}{G2} & InternImage-B & 94M \\
+                    & ConvNeXt-B & 87M \\
+                    & EfficientNetV2-L & 116M \\
+\end{tabular}
+\caption{Configuration groups of the backbones employed in the proposed model, alongside their respective number of parameters in millions.}
+\label{tab:50:back-configs}
+\end{table}
+
+Each selected backbone model has been pre-trained on an image classification task using the ImageNet dataset~\cite{5206848}. In accordance with established best practices in transfer learning~\cite{DBLP:journals/corr/YosinskiCBL14}, the weights of these models are frozen to serve as feature extractors.
+
+\paragraph{Neck Configuration}
+
+The neck component in the training phase adopts two distinct configurations: one based on the original BiFPN model and another based on the proposed CA-BiFPN model. In adherence to the standard configurations utilized in the InternImage work~\footnote{\url{https://github.com/OpenGVLab/InternImage/tree/master/detection/configs/coco}}, we employ a five-layered architecture for each neck with an output channel size of 256\footnote{\(C_{IN}\) in output nodes as depicted in Figure \ref{fig:40:arq-ca-bifpn}}.
+
+\paragraph{Head Detector Configuration}
+
+As previously stated in the preceding chapter, the head detector employed in the end-to-end model is Mask R-CNN. The configuration for the anchor sizes is set to \((32, 64, 128, 256)\) and aspect ratios are set to \((0.5, 1.0, 1.5, 2.0)\). Both the RoI Pooler Object and the RoI Pooler Mask receive feature outputs labeled as \texttt{'P0', 'P1', 'P2', 'P3'} from the neck component.
+
+
+\paragraph{Implementation of Training Procedures}
+Building upon the aforementioned definitions of backbones and necks, the ultimate configurations utilized for the training implementation in this study comprise the following combinations:
+\begin{itemize}
+    \item InternImage-S~\cite{wang2023internimage} + BiFPN~\cite{tan2020efficientdet}
+    \item ConvNeXt-S~\cite{liu2022convnet} + BiFPN~\cite{tan2020efficientdet}
+    \item EfficientNetV2-M~\cite{tan2021efficientnetv2} + BiFPN~\cite{tan2020efficientdet}
+    \item InternImage-S~\cite{wang2023internimage} + CABiFPN~(ours)
+    \item ConvNeXt-S~\cite{liu2022convnet} + CABiFPN~(ours)
+    \item EfficientNetV2-M~\cite{tan2021efficientnetv2} + CABiFPN~(ours)
+\end{itemize}
+
+In alignment with established best practices exemplified by InternImage \cite{wang2023internimage}, the backbones components were initialized with weights pretrained on classification tasks. Subsequent training was conducted on the neck components as well as the Mask R-CNN head detector, adhering to a $1x$ schedule comprising 12 epochs\footnote{For further insights into common scheduling practices for object detection networks trained from scratch, refer to \url{https://github.com/facebookresearch/detectron2/blob/main/MODEL_ZOO.md}}.\\
+
+The experiments utilized the \texttt{train2017} dataset from COCO. Moreover, a series of image augmentations were employed using the Albumentations library \cite{info11020125}. The specific transformations and their respective probabilities are delineated in Table \ref{tab:50:augment}. These augmentations were applied both to the input images and the associated ground-truth annotations, including bounding boxes and binary segmentation masks.\\
+
+\begin{table}[!htbp]
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Transform} & \textbf{Probability} & \textbf{Description} \\ \hline
+Resize & $p=1$ & Rescale to $224 \times 224$\\ \hline
+Random Brightness Contrast & $p=0.4$ & Alter brightness and contrast randomly\\ \hline
+RGB Shift & $p=0.5$ & Shift RGB channels randomly\\ \hline
+Invert Image & $p=0.5$ & Invert colors by subtracting pixel values\\ \hline
+Blur & $p=0.3$ & Apply blur\\ \hline
+Gauss Noise& $p=0.4$ & Add Gaussian noise\\ \hline
+Flip & $p=0.4$ & Flip image\\ \hline
+Random Rotate $90^{\circ}$ & $p=0.4$ & Rotate $90^{\circ}$\\ \hline
+Normalize & $p=1$ & Normalize image\\ \hline
+\end{tabular}
+\end{adjustbox}
+\caption{Image augmentation transforms from Albumentations~\cite{info11020125} along with their associated probabilities.}
+\label{tab:50:augment}
+\end{table}
+
+To optimize the networks, the AdamW optimizer \cite{kingma2017adam} was utilized, conforming to the $1x$ schedule. The learning rate was set at $0.001$, with a weight decay coefficient of $0.00001$. Training was executed with a batch size of two to mitigate the risk of \texttt{out-of-memory} errors. It should be noted that, to further avert memory-related complications, the default image size from the ImageNet dataset was employed, as opposed to the larger InternImage dimensions of $1333 \times 800$.
+
+\section{Metric Evaluation Results}
+In accordance with the evaluation conducted on the six trained models delineated in Section \ref{subsubsec:40:train}, we assessed their performance using the metric of mean average precision (AP) at Intersection over Union (IoU) thresholds of 0.50 and 0.75. Furthermore, a global average performance metric was derived for the entire validation set \texttt{val2017} from the COCO dataset. These empirical results are systematically presented in Table \ref{table:results:main}.\\
+
+%%%% Table with performance over coco2017 val2017 %%%% 
+\begin{table}[!htbp]
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{l|ll|cccccc|}
+\cline{2-9}
+\textbf{}                                           & \multicolumn{2}{c|}{\textbf{\#params}}                                     & \multicolumn{6}{c|}{\textbf{Mask R-CNN 1x schedule}}                                                                                                                                                               \\ \cline{1-1}
+\multicolumn{1}{|l|}{\textbf{Model}}                & \multicolumn{1}{c}{\textbf{Neck}} & \multicolumn{1}{c|}{\textbf{Backbone}} & \multicolumn{1}{c}{\textbf{$AP^{bbox}$}} & \multicolumn{1}{c}{\textbf{$AP^{bbox}_{50}$}} & \multicolumn{1}{c}{\textbf{$AP^{bbox}_{75}$}} & \multicolumn{1}{c}{\textbf{$AP^{mask}$}} & \multicolumn{1}{c}{\textbf{$AP^{mask}_{50}$}} & \multicolumn{1}{c|}{\textbf{$AP^{mask}_{75}$}} \\ \hline
+\multicolumn{1}{|l|}{InternImage-S~\cite{wang2023internimage} + BiFPN~\cite{tan2020efficientdet}}         & $2.3M$ & $48.5M$ & $0.1654$ & $0.2914$ & $0.1715$ & $0.0341$ & $0.1239$ & $0.0080$ \\
+\multicolumn{1}{|l|}{ConvNeXt-S~\cite{liu2022convnet} + BiFPN~\cite{tan2020efficientdet}}            & $2.4M$ & $49.4M$ & $0.1884$ & $0.3215$ & $0.1966$ & $0.0405$ & $0.1420$ & $0.0100$ \\
+\multicolumn{1}{|l|}{EfficientNetV2-M~\cite{tan2021efficientnetv2} + BiFPN~\cite{tan2020efficientdet}}   & $2.2M$ & $52.2M$ & $0.2050$ & $0.3507$ & $0.2177$ & $0.0416$ & $0.1531$ & $0.0092$ \\ \hline
+\multicolumn{1}{|l|}{InternImage-S~\cite{wang2023internimage} + CABiFPN~(ours)}       & $9.7M$ & $48.5M$ & $0.2071$ & $0.3548$ & $0.2168$ & $0.0421$ & $0.1508$ & $0.0108$ \\
+\multicolumn{1}{|l|}{ConvNeXt-S~\cite{liu2022convnet} + CABiFPN~(ours)}          & $9.8M$ & $49.4M$ & $0.2297$ & $0.3906$ & $0.2416$ & $0.0475$ & $0.1663$ & $0.0117$ \\
+\multicolumn{1}{|l|}{EfficientNetV2-M~\cite{tan2021efficientnetv2} + CABiFPN~(ours)} & $9.6M$ & $52.2M$ & $0.2470$ & $0.4203$ & $0.2592$ & $0.0433$ & $0.1648$ & $0.0083$ \\ \hline
+\end{tabular}
+\end{adjustbox}
+\caption[Performance metrics for object detection and instance segmentation on the \texttt{val2017} dataset from \texttt{COCO2017}.]{Performance metrics for object detection and instance segmentation on the \texttt{val2017} dataset from \texttt{COCO2017}. \textbf{$AP$} denotes the overall mean average precision. \textbf{$AP_{50}$} and \textbf{$AP_{75}$} indicate the mean average precision at $IoU=0.50$ and $IoU=0.75$ respectively. Meanwhile, \textbf{$AP^{bbox}$} and \textbf{$AP^{mask}$} represent the mean average precision for bounding box and mask results, respectively.}
+\label{table:results:main}
+\end{table}
+%%%% Table with performance over coco2017 val2017 %%%%
+
+
+\section{Ablation CAM Results}
+Due to the limitations of the measure provided in the previous section, which does not offer a comprehensive understanding of the neck model behavior, we aim to augment our model evaluation. To achieve this, we will examine the Class Activation Mapping (CAM) across five layers of the necks, for each of the six trained models, utilizing the Ablation CAM visual explanation technique.\\
+
+To provide a robust assessment, three disparate images from the COCO dataset have been selected at random, identifiable by their respective IDs: \texttt{96825}, \texttt{171382}, and \texttt{509403}. These images serve as the ground truth and are accompanied by their respective bounding boxes and segmentation masks, all of which are depicted in Figure \ref{fig:results:originals}.\\
+
+For the purposes of this section, our primary results will center around the visual results generated for the image with ID \texttt{509403}. However, the visual results corresponding to images with IDs \texttt{96825} and \texttt{171382} have also been generated and can be found in the supplementary sections. Specifically, these supplementary figures are located in Section \ref{sec:70:preds} and Section \ref{sec:70:cams} of Appendix \ref{appendix:figs-tabs}.
+
+Upon selection of these test images, we have conducted predictions to generate bounding boxes and segmentation masks for each. The results of these predictions are systematically represented in Figures \ref{fig:results:preds}, \ref{fig:results:preds:a1}, and \ref{fig:results:preds:a2}.\\
+
+After applying the Ablation CAM visual explanation technique to the five layers of the neck in each trained model, we generated a series of visual results. For image ID \texttt{509403}, these are shown in Figures \ref{fig:results:cam:509403:1} to \ref{fig:results:cam:509403:6}. Similarly, the visual outcomes for image ID \texttt{96825} are displayed in Figures \ref{fig:results:cam:96825:1} to \ref{fig:results:cam:96825:6}, while those for image ID \texttt{171382} appear in Figures \ref{fig:results:cam:171382:1} to \ref{fig:results:cam:171382:6}.
+
+
+%%%% Orginal images and ground truth %%%%
+\begin{figure}[!htbp]
+    \centering % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/original/000000096825.jpeg}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/original/000000171382.jpeg}
+\end{subfigure} % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/original/000000509403.jpeg}
+\end{subfigure}\hfil
+\vspace{5mm}
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/ground_truth/000000096825_segm_bbox.jpeg}
+\end{subfigure} % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/ground_truth/000000171382_segm_bbox.jpeg}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/ground_truth/000000509403_segm_bbox.jpeg}
+\end{subfigure}
+\caption[Original images from \texttt{COCO2017} utilized for testing.]{Original images from \texttt{COCO2017} utilized for testing. The first row displays images with IDs \texttt{96825}, \texttt{171382}, and \texttt{509403}. The second row showcases the bounding boxes and instance segmentation masks derived from the annotations of these images.}
+\label{fig:results:originals}
+\end{figure}
+%%%% Orginal images and ground truth %%%%
+%%%% Instacen segmetnation masks and boundinx box predicot for each model over the image 509403%%%%
+\begin{figure}[!htbp]
+    \centering % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000509403/000000509403_pred_segm_bbox_internimage_s_bifpn.jpeg}
+  \caption{\protect\raggedright Predictions using InternImage-S + BiFPN.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000509403/000000509403_pred_segm_bbox_convnext_small_bifpn.jpeg}
+  \caption{\protect\raggedright Predictions using ConvNeXt-S + BiFPN.}
+\end{subfigure} % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000509403/000000509403_pred_segm_bbox_tf_efficientnetv2_m_bifpn.jpeg}
+  \caption{\protect\raggedright Predictions using EfficientNetV2-M + BiFPN.}
+\end{subfigure}\hfil
+\vspace{5mm}
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000509403/000000509403_pred_segm_bbox_internimage_s_cabifpn.jpeg}
+  \caption{\protect\raggedright Predictions using InternImage-S + CABiFPN.}
+\end{subfigure} % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000509403/000000509403_pred_segm_bbox_convnext_small_cabifpn.jpeg}
+  \caption{\protect\raggedright Predictions using ConvNeXt-S + CABiFPN.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}[t]{0.3\textwidth}
+  \includegraphics[height=3cm, width=\linewidth]{figures/segm_bbox/000000509403/000000509403_pred_segm_bbox_tf_efficientnetv2_m_cabifpn.jpeg}
+  \caption{\protect\raggedright Predictions using EfficientNetV2-M + CABiFPN.}
+\end{subfigure}
+\caption{Object detection and instance segmentation predictions for image \texttt{ID 509403} based on evaluations of the six tested models.}
+\label{fig:results:preds}
+\end{figure}
+%%%% Instacen segmetnation masks and boundinx box predicot for each model over the image 509403%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ABLATION CAMS over 509403 COCO image %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Ablation CAM applied to  InternImage-S~+~BiFPN  %%%%%
+\begin{figure}[!htbp]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/internimage_s_bifpn/000000509403_AblationCAM_internimage_s_bifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/internimage_s_bifpn/000000509403_AblationCAM_internimage_s_bifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/internimage_s_bifpn/000000509403_AblationCAM_internimage_s_bifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/internimage_s_bifpn/000000509403_AblationCAM_internimage_s_bifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/internimage_s_bifpn/000000509403_AblationCAM_internimage_s_bifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the InternImage-S~+~BiFPN model.]{\texttt{Ablation CAM} applied to the five layers in the neck of the InternImage-S~+~BiFPN model, with corresponding object detection predictions for image \texttt{ID 509403}.}
+\label{fig:results:cam:509403:1}
+\end{figure}
+%%%%% Ablation CAM applied to  InternImage-S~+~BiFPN  %%%%%
+
+%%%%% Ablation CAM applied to  InternImage-S~+~CABiFPN  %%%%%
+\begin{figure}[!htbp]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/internimage_s_cabifpn/000000509403_AblationCAM_internimage_s_cabifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/internimage_s_cabifpn/000000509403_AblationCAM_internimage_s_cabifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/internimage_s_cabifpn/000000509403_AblationCAM_internimage_s_cabifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/internimage_s_cabifpn/000000509403_AblationCAM_internimage_s_cabifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/internimage_s_cabifpn/000000509403_AblationCAM_internimage_s_cabifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the InternImage-S~+~CABiFPN model.]{\texttt{Ablation CAM} applied to the five layers in the neck of the InternImage-S~+~CABiFPN model, with corresponding object detection predictions for image \texttt{ID 509403}.}
+\label{fig:results:cam:509403:2}
+\end{figure}
+%%%%% Ablation CAM applied to  InternImage-S~+~CABiFPN  %%%%%
+
+
+%%%%% Ablation CAM applied to  ConvNeXt-S~+~BiFPN  %%%%%
+\begin{figure}[!htbp]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/convnext_small_bifpn/000000509403_AblationCAM_convnext_small_bifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/convnext_small_bifpn/000000509403_AblationCAM_convnext_small_bifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/convnext_small_bifpn/000000509403_AblationCAM_convnext_small_bifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/convnext_small_bifpn/000000509403_AblationCAM_convnext_small_bifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/convnext_small_bifpn/000000509403_AblationCAM_convnext_small_bifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the ConvNeXt-S~+~BiFPN model.]{\texttt{Ablation CAM} applied to the five layers in the neck of the ConvNeXt-S~+~BiFPN model, with corresponding object detection predictions for image \texttt{ID 509403}.}
+\label{fig:results:cam:509403:3}
+\end{figure}
+%%%%% Ablation CAM applied to  ConvNeXt-S~+~BiFPN  %%%%%
+
+%%%%% Ablation CAM applied to  ConvNeXt-S~+~CABiFPN  %%%%%
+\begin{figure}[!htbp]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/convnext_small_cabifpn/000000509403_AblationCAM_convnext_small_cabifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/convnext_small_cabifpn/000000509403_AblationCAM_convnext_small_cabifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/convnext_small_cabifpn/000000509403_AblationCAM_convnext_small_cabifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/convnext_small_cabifpn/000000509403_AblationCAM_convnext_small_cabifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/convnext_small_cabifpn/000000509403_AblationCAM_convnext_small_cabifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the ConvNeXt-S~+~CABiFPN model.]{\texttt{Ablation CAM} applied to the five layers in the neck of the ConvNeXt-S~+~CABiFPN model, with corresponding object detection predictions for image \texttt{ID 509403}.}
+\label{fig:results:cam:509403:4}
+\end{figure}
+%%%%% Ablation CAM applied to  ConvNeXt-S~+~BiFPN  %%%%%
+
+%%%%% Ablation CAM applied to  TF-EfficientNetV2-M~+~BiFPN  %%%%%
+\begin{figure}[!htbp]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/tf_efficientnetv2_m_bifpn/000000509403_AblationCAM_tf_efficientnetv2_m_bifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/tf_efficientnetv2_m_bifpn/000000509403_AblationCAM_tf_efficientnetv2_m_bifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/tf_efficientnetv2_m_bifpn/000000509403_AblationCAM_tf_efficientnetv2_m_bifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/tf_efficientnetv2_m_bifpn/000000509403_AblationCAM_tf_efficientnetv2_m_bifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/tf_efficientnetv2_m_bifpn/000000509403_AblationCAM_tf_efficientnetv2_m_bifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the TF-EfficientNetV2-M~+~BiFPN model.]{\protect\raggedright \texttt{Ablation CAM} applied to the five layers in the neck of the TF-EfficientNetV2-M~+~BiFPN model, with corresponding object detection predictions for image \texttt{ID 509403}.}
+\label{fig:results:cam:509403:5}
+\end{figure}
+%%%%% Ablation CAM applied to  TF-EfficientNetV2-M~+~BiFPN  %%%%%
+
+%%%%% Ablation CAM applied to  TF-EfficientNetV2-M~+~CABiFPN  %%%%%
+\begin{figure}[!htbp]
+    \centering % <-- added
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/tf_efficientnetv2_m_cabifpn/000000509403_AblationCAM_tf_efficientnetv2_m_cabifpn_l0.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 1.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/tf_efficientnetv2_m_cabifpn/000000509403_AblationCAM_tf_efficientnetv2_m_cabifpn_l1.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 2.}
+\end{subfigure}\hfil
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/tf_efficientnetv2_m_cabifpn/000000509403_AblationCAM_tf_efficientnetv2_m_cabifpn_l2.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 3.}
+\end{subfigure} % <-- added
+\medskip
+\begin{subfigure}{0.45\textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/tf_efficientnetv2_m_cabifpn/000000509403_AblationCAM_tf_efficientnetv2_m_cabifpn_l3.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 4.}
+\end{subfigure}\hfil % <-- added
+\begin{subfigure}{0.45 \textwidth}
+  \includegraphics[width=\linewidth]{figures/cams/000000509403/tf_efficientnetv2_m_cabifpn/000000509403_AblationCAM_tf_efficientnetv2_m_cabifpn_l4.jpeg}
+  \caption{\protect\raggedright \texttt{Ablation CAM} applied to Layer 5.}
+\end{subfigure}
+\caption[\texttt{Ablation CAM} applied to the five layers in the neck of the EfficientNetV2-M~+~CABiFPN model.]{\protect\raggedright \texttt{Ablation CAM} applied to the five layers in the neck of the EfficientNetV2-M~+~CABiFPN model, with corresponding object detection predictions for image \texttt{ID 509403}.}
+\label{fig:results:cam:509403:6}
+\end{figure}
+%%%%% Ablation CAM applied to  TF-EfficientNetV2-M~+~CABiFPN  %%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ABLATION CAMS over 509403 COCO image %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Imputation Results} \label{sec:51:road-res}
+To complement the insights gained from the Ablation Class Activation Mapping (CAM) visual explanations, we utilized the pixel-perturbation technique known as ROAD~\cite{DBLP:journals/corr/abs-1912-01451}. This approach is detailed in Section \ref{subsubsec:road} and was applied to each of the five layers in the neck across all six trained models for a comprehensive analysis.
+We considered two distinct strategies for pixel removal: Most Relevant First (MoRF) and Least Relevant First (LeRF)~\cite{DBLP:journals/corr/SamekBMBM15}. These strategies were crafted to either target the most relevant or least relevant pixels, thereby offering a more nuanced understanding of the model's decision-making processes.\\
+
+To evaluate the impact of these perturbations on model performance, we utilized a custom confidence metric derived from both MoRF and LeRF. The equation for this metric is given by:
+\begin{equation*}
+    \text{Confidence Metric} = \frac{(LeRF - MoRF)}{2},
+\end{equation*}
+This metric was applied across multiple percentile thresholds, specifically at 20\%, 40\%, 60\%, and 80\% levels of pixel removal, to provide a multi-faceted view of model sensitivity to pixel perturbations.\\
+
+The resultant data are tabulated and can be found in Table \ref{tab:results:509403:comb-road} for image ID \texttt{509403}, Table \ref{tab:results:96825:comb-road} for image ID \texttt{96825}, and Table \ref{tab:results:171382:comb-road} for image ID \texttt{171382}. These tables collectively present a comprehensive overview of how the imputation strategies impact the interpretability and reliability of the trained models under study.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Tables with ROAD LRF AVG and  ROAD MRF AVG for COCO images %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%% Table COCO image ID 509403 %%%% 
+\begin{table}[!htbp]
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{l|lllll|}
+\cline{2-6}
+\multicolumn{1}{c|}{} & \multicolumn{5}{c|}{\textbf{Confidence}} \\ \cline{1-1}
+\multicolumn{1}{|c|}{\textbf{Model}} & \multicolumn{1}{c}{\textbf{L1}} & \multicolumn{1}{c}{\textbf{L2}} & \multicolumn{1}{c}{\textbf{L3}} & \multicolumn{1}{c}{\textbf{L4}} & \multicolumn{1}{c|}{\textbf{L5}} \\ \hline
+\multicolumn{1}{|l|}{InternImage-S~\cite{wang2023internimage} + BiFPN~\cite{tan2020efficientdet}} & \textbf{2.842369} & 2.6254954 & 2.6084025 & 1.4631767 & \textit{1.2592103} \\
+\multicolumn{1}{|l|}{ConvNeXt-S~\cite{liu2022convnet} + BiFPN~\cite{tan2020efficientdet}} & \textit{2.5395045} & \textbf{2.8010774} & 2.564676 & 2.7891173 & 2.7836413 \\
+\multicolumn{1}{|l|}{EfficientNetV2-M~\cite{tan2021efficientnetv2} + BiFPN~\cite{tan2020efficientdet}} & 3.8836775 & 3.9961786 & 4.127801 & \textit{3.7277918} & \textbf{4.129478} \\ \hline
+\multicolumn{1}{|l|}{InternImage-S~\cite{wang2023internimage} + CABiFPN~(ours)} & 4.4633584 & 4.4853263 & \textit{4.432617} & \textbf{4.67398} & 4.667679 \\
+\multicolumn{1}{|l|}{ConvNeXt-S~\cite{liu2022convnet} + CABiFPN~(ours)} & \textbf{3.980652} & 3.742455 & 3.9141197 & 3.9185126 & \textit{3.6784308} \\
+\multicolumn{1}{|l|}{EfficientNetV2-M~\cite{tan2021efficientnetv2} + CABiFPN~(ours)} & \textit{3.916544} & 3.9983945 & 4.111134 & 4.141871 & \textbf{4.179732} \\ \hline
+\end{tabular}
+\end{adjustbox}
+\caption[Combined MoRF and LeRF avarage confidence using ROAD strategy on image \texttt{ID 509403}.]{Combined MoRF and LeRF avarage confidence using ROAD strategy for the five neck layers across six models, evaluated at percentiles 20, 40, 60, and 80 on image \texttt{ID 509403}. The highest values are in \textbf{bold}, indicating the most confident layer in the neck, while the lowest values are in \textit{italic}.}
+\label{tab:results:509403:comb-road}
+\end{table}
+
+
+%%%% Table COCO image ID 96825 %%%% 
+\begin{table}[!htbp]
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{l|lllll|}
+\cline{2-6}
+\multicolumn{1}{c|}{} & \multicolumn{5}{c|}{\textbf{Confidence}} \\ \cline{1-1}
+\multicolumn{1}{|c|}{\textbf{Model}} & \multicolumn{1}{c}{\textbf{L1}} & \multicolumn{1}{c}{\textbf{L2}} & \multicolumn{1}{c}{\textbf{L3}} & \multicolumn{1}{c}{\textbf{L4}} & \multicolumn{1}{c|}{\textbf{L5}} \\ \hline
+\multicolumn{1}{|l|}{InternImage-S~\cite{wang2023internimage} + BiFPN~\cite{tan2020efficientdet}} & 0.95029116 & \textbf{0.95994985} & 0.48607662 & -0.24469143 & \textit{-0.48681438} \\
+\multicolumn{1}{|l|}{ConvNeXt-S~\cite{liu2022convnet} + BiFPN~\cite{tan2020efficientdet}} & \textbf{0.94896114} & 0.93078464 & 0.93930924 & 0.933002 & \textit{0.9292339} \\
+\multicolumn{1}{|l|}{EfficientNetV2-M~\cite{tan2021efficientnetv2} + BiFPN~\cite{tan2020efficientdet}} & \textbf{0.9650256} & 0.9558013 & 0.9592131 & \textit{0.95095545} & 0.9558286 \\ \hline
+\multicolumn{1}{|l|}{InternImage-S~\cite{wang2023internimage} + CABiFPN~(ours)} & \textit{0.} & 0.9606638 & \textbf{0.969138} & 0.9632113 & 0.96664834 \\
+\multicolumn{1}{|l|}{ConvNeXt-S~\cite{liu2022convnet} + CABiFPN~(ours)} & \textit{0.93161523} & \textbf{0.9501411} & 0.9351118 & 0.9351068 & 0.93464565 \\
+\multicolumn{1}{|l|}{EfficientNetV2-M~\cite{tan2021efficientnetv2} + CABiFPN~(ours)} & 0.9696959 & 0.9621654 & \textit{0.9494796} & \textbf{0.97354376} & 0.9564767 \\ \hline
+\end{tabular}
+\end{adjustbox}
+\caption[Combined MoRF and LeRF avarage confidence using ROAD strategy on image \texttt{ID 96825}.]{Combined MoRF and LeRF avarage confidence using ROAD strategy for the five neck layers across six models, evaluated at percentiles 20, 40, 60, and 80 on image \texttt{ID 96825}. The highest values are in \textbf{bold}, indicating the most confident layer in the neck, while the lowest values are in \textit{italic}.}
+\label{tab:results:96825:comb-road}
+\end{table}
+
+
+%%%% Table COCO image ID 171382 %%%% 
+\begin{table}[!htbp]
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{l|lllll|}
+\cline{2-6}
+\multicolumn{1}{c|}{} & \multicolumn{5}{c|}{\textbf{Confidence}} \\ \cline{1-1}
+\multicolumn{1}{|c|}{\textbf{Model}} & \multicolumn{1}{c}{\textbf{L1}} & \multicolumn{1}{c}{\textbf{L2}} & \multicolumn{1}{c}{\textbf{L3}} & \multicolumn{1}{c}{\textbf{L4}} & \multicolumn{1}{c|}{\textbf{L5}} \\ \hline
+\multicolumn{1}{|l|}{InternImage-S~\cite{wang2023internimage} + BiFPN~\cite{tan2020efficientdet}} & 2.9169397 & 3.3592114 & \textbf{3.4150054} & 2.9640887 & \textit{1.8052661} \\
+\multicolumn{1}{|l|}{ConvNeXt-S~\cite{liu2022convnet} + BiFPN~\cite{tan2020efficientdet}} & \textit{6.385799} & 6.8318634 & \textbf{7.1888366} & 6.8878274 & 6.6595736 \\
+\multicolumn{1}{|l|}{EfficientNetV2-M~\cite{tan2021efficientnetv2} + BiFPN~\cite{tan2020efficientdet}} & 6.1930113 & \textbf{6.560341} & 6.082729 & 6.4222465 & \textit{5.624841} \\ \hline
+\multicolumn{1}{|l|}{InternImage-S~\cite{wang2023internimage} + CABiFPN~(ours)} & \textit{7.4974775} & 7.8757086 & 8.453202 & \textbf{8.4683075} & 8.111521 \\
+\multicolumn{1}{|l|}{ConvNeXt-S~\cite{liu2022convnet} + CABiFPN~(ours)} & \textit{5.323591} & 5.753009 & 6.464163 & 6.36069 & \textbf{6.803749} \\
+\multicolumn{1}{|l|}{EfficientNetV2-M~\cite{tan2021efficientnetv2} + CABiFPN~(ours)} & \textit{6.8131247} & 7.8556514 & \textbf{8.355728} & 7.8893404 & 8.054105 \\ \hline
+\end{tabular}
+\end{adjustbox}
+\caption[Combined MoRF and LeRF avarage confidence using ROAD strategy on image \texttt{ID 171382}.]{Combined MoRF and LeRF avarage confidence using ROAD strategy for the five neck layers across six models, evaluated at percentiles 20, 40, 60, and 80 on image \texttt{ID 171382}. The highest values are in \textbf{bold}, indicating the most confident layer in the neck, while the lowest values are in \textit{italic}.}
+\label{tab:results:171382:comb-road}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Tables with ROAD LRF AVG and  ROAD MRF AVG for COCO images %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

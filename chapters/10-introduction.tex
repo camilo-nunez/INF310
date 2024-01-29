@@ -1,0 +1,60 @@
+\chapter{Introduction}
+\label{chap:introduction}
+
+Over the past decade, there has been a marked escalation in both the development and application of deep learning methodologies across diverse disciplines, ranging from computer vision to natural language processing~\cite{LeCun2015}. A particularly noteworthy strategy that has been the focal point of significant academic and industrial attention within this domain is \textbf{feature fusion}~\cite{rs10020299}. Conceptually, feature fusion is the integration of information stemming from disparate sources or hierarchical levels, invariably aiming to augment the efficacy of a deep neural network~\cite{7214350}.\\
+
+In the specialized domain of computer vision, Convolutional Neural Networks (CNNs) have emerged as the preeminent mechanism for feature extraction~\cite{NIPS2012_c399862d}. These networks are architected with multiple layers designed to discern hierarchical patterns inherent in visual data. Progressing through the layers of a CNN, one observes a gradual transition in feature complexity: initial layers typically capture rudimentary patterns, whereas deeper layers encapsulate more intricate, abstract representations of the data~\cite{DBLP:journals/corr/ZeilerF13}.\\
+
+The doctrine of feature fusion becomes instrumental within the context of CNNs~\cite{s19071599}. By strategically merging features across varying layers, CNNs are adept at synthesizing representations that concurrently encapsulate both the fine-grained details discerned by the preliminary layers and the higher-order abstractions identified by the deeper strata~\cite{8099726}. This intricate melding ensures that during computational tasks, such as image classification or object detection, the models are equipped to factor in both the localized nuances and overarching patterns, thereby enhancing their predictive accuracy and robustness~\cite{DBLP:journals/corr/Girshick15}.
+
+\section{Introduction to \textit{Context Features} in CNNs}
+\textbf{Context features} encompass the auxiliary information that offers an expanded comprehension of the primary data features. Distinctly, primary data features are concerned with immediate observable patterns. On the other hand, context features shed light on the encompassing details, thus presenting a more comprehensive perspective. The incorporation of such context allows models to arrive at more nuanced decisions. Taking image recognition as a case in point: while the primary feature might revolve around the shape of an object, the context feature delves into adjacent objects or the backdrop. This, in turn, can provide invaluable hints regarding the identity of the primary object.\\
+
+As highlighted earlier in this chapter, Convolutional Neural Networks stand out as the zenith of feature extraction methods. Predominantly applied in image processing, CNNs have an innate capability to weave in context features due to their hierarchical architecture. This layered structure of CNNs is not merely a design, it's a deliberate strategy. While the initial layers grapple with basic features like edges, the deeper layers venture into the territory of intricate patterns, sometimes discerning whole objects~\cite{DBLP:journals/corr/ZeilerF13}.
+
+\section{Problem Definition}
+The introduction of the Features Pyramid Networks (FPN) method in the realm of computer vision has precipitated a notable shift towards harnessing feature extraction through comprehensive pre-trained networks~\cite{Lin_2017_CVPR}. Concomitant to this trend is the increasing ubiquity of feature fusion within the segment of these architectures known as the \textbf{neck}. This growing trend is underpinned by the fusion capabilities inherent to the neck, where an amalgamation of both low-level and high-level features, drawn from the multi-tiered structure of the primary network, or \textbf{backbone}, takes place.\\
+
+In light of this evolution, there has been a proliferation of architectural designs aiming to augment and hone the foundational tenets and mechanisms of the FPN. Prominent exemplars include the PANet~\cite{DBLP:journals/corr/abs-1803-01534}, NAS-FPN~\cite{DBLP:journals/corr/abs-1904-07392}, and BiFPN~\cite{DBLP:journals/corr/abs-1911-09070}. Such advancements echo the seminal influence of FPN in catalyzing multi-level feature fusion.\\
+
+Yet, a discerning examination reveals a lacuna in these sophisticated architectures: \textit{while they are adept at capitalizing on hierarchical levels for feature fusion, they frequently neglect the rich contextual information embedded in the input}. This context, which is palpable across all fusion strata, intimates a potential oversight of invaluable scene-level semantic cues. Furthermore, a significant portion of the feature fusion modules in the neck, often resort to elementary operations such as addition or concatenation~\cite{Lin_2017_CVPR,DBLP:journals/corr/abs-1803-01534}, or adhere to rigid linear aggregation schemas for feature maps~\cite{DBLP:journals/corr/abs-1904-07392, DBLP:journals/corr/abs-1911-09070}. Such practices can inadvertently stymie the organic interplay between global and local context features.\\
+
+The aim of this work is to meticulously design, implement, and evaluate the efficacy of aggregating contextual information from disparate receptive fields tailored to objects of diverse scales. Specifically, we intend to ascertain whether such integration can enhance the feature fusion process across the multi-tiered hierarchy inherent in a neck architecture. This endeavor seeks not only to elucidate the potential benefits of this approach but also to provide a meaningful contribution to the ongoing discourse on optimizing neck structures within advanced architectural designs.
+
+\section{Objectives}
+\subsection{General Objective}
+The general objective of this research is to design, implement, and evaluate a feature fusion neck architecture; this architecture integrates contextual information sourced from multiple receptive fields, thereby ensuring optimal recognition of objects across disparate scales of feature maps, and is especially tailored to enhance performance in tasks such as Object Detection and Instance Segmentation.
+
+\subsection{Specific Objectives} \label{10:spec-obj}
+% The particular objectives of this research are:
+% \begin{enumerate}
+%     \item Identify an optimal neck architecture with capabilities of an efficient multi-scale feature fusion.
+%     \item Identify an optimal operator block for the feature fusion using the contextual information from different receptive fields.
+%     \item Design a neck architecture with the identified operator block.
+%     \item Design a end-to-end model using a backbone, neck and the head detector \textit{Mask R-CNN}.
+%     \item Implement the end-to-end model using \textit{Pytorch} accelerated over GPU.
+%     \item Evaluate the end-to-end model using the possible backbones InternImage, ConvNeXt and EfficientNetV2.
+%     \item Evaluate the end-to-end model using the possible neck with \textit{BiFPN} and the identified neck architecture.
+% \end{enumerate}
+The specific objectives delineated for this research endeavor are as follows:
+\begin{enumerate}
+    \item Determine the most suitable neck architecture capable of proficient multi-scale feature fusion.
+    \item Ascertain the ideal operator block for feature fusion, utilizing contextual information from diverse receptive fields.
+    \item Develop a neck architecture incorporating the previously identified operator block.
+    \item Construct a comprehensive, end-to-end model comprised of a backbone, neck, and the detection head using \textit{Mask R-CNN}.
+    \item Implement the aforementioned end-to-end model using \textit{Pytorch}, optimized for GPU acceleration.
+    \item Appraise the performance of the end-to-end model when paired with potential backbones such as InternImage, ConvNeXt, and EfficientNetV2.
+    \item Assess the efficacy of the end-to-end model in conjunction with potential necks, specifically the \textit{BiFPN} and the identified neck architecture.
+\end{enumerate}
+
+\section{Work Overview}
+The organization of this document is systematically outlined as follows:
+
+\begin{itemize}
+    \item \textbf{Introduction}: This section introduces the research, elucidates the underlying motivation, and defines the specific problem under investigation. It sets the context for the entire study by emphasizing the research's significance and its pertinence to contemporary discussions.
+    \item \textbf{Background}: This section delves into the foundational knowledge that informs the research. It explicates key concepts and principles associated with Convolutional Neural Networks, provides an overview of Instance Segmentation and Object Detection tasks, and sets forth the metrics and explanation methods employed to assess the proposed architecture.
+    \item \textbf{Related Work}: This section offers a review of prior research and studies pertinent to the subject matter. In particular, it elaborates on the utilization of backbones and necks in the journey to conceptualize the proposed architecture.
+    \item \textbf{Proposal}: This segment presents the proposed \textbf{CA-BiFPN} architecture, detailing its design and implementation.
+    \item \textbf{Results and Discussion}: This section furnishes the research outcomes, specifically focusing on the metrics and explanation method results. An extensive discussion follows, where the findings are scrutinized, juxtaposed, and interpreted, elucidating their broader implications and relevance.
+    \item \textbf{Conclusion}: This concluding section encapsulates the principal insights derived from the research, underscores the salience of the findings, and contemplates potential trajectories for future research in this domain.
+\end{itemize}

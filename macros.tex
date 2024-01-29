@@ -1,0 +1,25 @@
+\usepackage{amsfonts} % for "\mathbb" macro
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+%% Reescrituraa para vectore oo matrices
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\DeclareRobustCommand*{\drv}{\mathop{}\!\mathrm{d}}
+
+\newenvironment{dedication}
+  {\clearpage           % we want a new page
+   \thispagestyle{empty}% no header and footer
+   \vspace*{\stretch{1}}% some space at the top 
+   \raggedleft          % flush to the right margin <===============
+   \section*{Dedication} % <========================================
+   \itshape             % the text is in italics
+
+  }
+  {\par % end the paragraph
+   \vspace{\stretch{3}} % space at bottom is three times that at the top
+   \clearpage           % finish off the page
+  }
+
